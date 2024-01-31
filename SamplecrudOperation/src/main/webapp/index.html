@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>index Home</title>
+</head>
+<body>
+<h1>Add User</h1>
+
+    <input type="text" name="name" placeholder="name" id="name"><br><br>
+<input type="text" name="address" placeholder="address" id="address"><br><br>
+<input type="text" name="mobileNo" placeholder="mobileNo" id="mobileNo"><br><br>
+
+    <button  onClick="jj()">submit</button><br>
+
+<p>Get</p>
+
+<input type="text" name="name" placeholder="name" id="nameOfGet"><br><br>
+
+<button  onClick="get()">submit</button>
+
+<!--SamplecrudOperation-->
+<!--<h1>Get User</h1>-->
+<!--<form action="getuser" method="get">-->
+<!--    <input type="text" name="name" placeholder="Name"><br>-->
+<!--    <input type="submit">-->
+<!--</form>-->
+
+<!--<h1>Delete User</h1>-->
+<!--<form action="deleteuser" method="post">-->
+<!--    <input type="text" name="Name" placeholder="Name"><br>-->
+<!--    <input type="submit">-->
+<!--</form>-->
+
+<!--<h1>Update User</h1>-->
+<!--<form action="updateuser" method="post">-->
+<!--    <input type="text" name="Name" placeholder="Name"><br>-->
+<!--    <input type="text" name="address" placeholder="NAME"> <br>-->
+<!--    <input type="submit">-->
+<!--</form>-->
+
+<!--<h1>Query Methods Check</h1>-->
+<!--<form action="querymeth">-->
+<!--    <input type="text" name="name" placeholder="NAME"><br>-->
+<!--    <input type="submit">-->
+<!--</form>-->
+</body>
+<script>
+    function jj()
+    {
+
+var x= document.getElementById("name").value;
+var y=document.getElementById("address").value;
+var z=document.getElementById("mobileNo").value;
+const xhr = new XMLHttpRequest();
+const body = JSON.stringify({
+  name: x,
+  address:y,
+  mobileNo:z
+
+});
+xhr.open("POST", "http://localhost:8081/student/add");
+xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+
+xhr.onload = () => {
+  if (xhr.readyState == 4 && xhr.status == 201) {
+   alert();
+    console.log(JSON.parse(xhr.responseText));
+  } else {
+    console.log(`Error: ${xhr.status}`);
+  }
+};
+xhr.send(body);
+    }
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>GETMETHOD>>>>>>>
+function get()
+    {
+var x= document.getElementById("nameOfGet").value;
+const url = 'http://localhost:8081/student/get?name='+x;
+fetch(url)
+  .then(response => {
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+
+    return response.json();
+  })
+
+  .then(data => {
+      console.log('Data received ff:', data);
+
+var y='';
+
+    for(var i=0;i<data.length;i++)
+    {
+
+    y += data[i].name+'-'+data[i].address+"<br>";
+    //console.log(i);
+    }
+  //  document.getElementById("name").value = y;
+document.write(y);
+  })
+  .catch(error => {
+
+    console.error('Fetch error:', error);
+  });
+}
+
+
+</script>
+</html>
